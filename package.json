@@ -1,0 +1,40 @@
+{
+  "name": "netlify-graphql",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "apollo-boost": "0.1.1",
+    "apollo-server-lambda": "^2.0.0-rc.1",
+    "apollo-upload-server": "^5.0.0",
+    "graphql": "^0.13.2",
+    "lodash": "^4.17.10",
+    "netlify-lambda": "^0.4.0",
+    "node-fetch": "^2.1.2",
+    "react": "^16.4.1",
+    "react-apollo": "2.1.0-beta.3",
+    "react-art": "16.3.2",
+    "react-dom": "^16.4.1",
+    "react-native-web": "latest",
+    "react-router": "latest",
+    "react-router-dom": "latest",
+    "react-scripts": "1.1.4",
+    "recyclerlistview": "1.2.6",
+    "shorthash": "0.0.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "start:lambda": "netlify-lambda serve src/lambda",
+    "build": "react-scripts build",
+    "build:lambda": "netlify-lambda build src/lambda",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": {
+    "/.netlify/functions": {
+      "target": "http://localhost:9000",
+      "pathRewrite": {
+        "^/\\.netlify/functions": ""
+      }
+    }
+  }
+}
