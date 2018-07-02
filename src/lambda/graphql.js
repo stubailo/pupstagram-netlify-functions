@@ -69,9 +69,14 @@ const server = new ApolloServer({
   resolvers
 });
 
-exports.handler = server.createHandler({
+const asHandler = server.createHandler({
   cors: {
     origin: "*",
     credentials: true
   }
 });
+
+exports.handler = (...args) => {
+  console.log(args[0]);
+  return asHandler(...args);
+};
