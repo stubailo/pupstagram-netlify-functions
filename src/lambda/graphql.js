@@ -38,7 +38,7 @@ const createDog = (subbreeds, breed) => ({
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    helloWorld: () => await Promise.resolve("Hello, world!"),
+    helloWorld: async () => await Promise.resolve("Hello, world!"),
     dogs: async () => {
       const results = await fetch(`${API}/breeds/list/all`);
       const { message: dogs } = await results.json();
