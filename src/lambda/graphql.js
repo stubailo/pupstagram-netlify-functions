@@ -64,10 +64,16 @@ const resolvers = {
   }
 };
 
-const server = new ApolloServer({
+const options = {
   typeDefs,
   resolvers
-});
+};
+
+if (process.env.ENGINE_API_KEY) {
+  options.engine = { apiKey: process.env.ENGINE_API_KEY };
+}
+
+const server = new ApolloServer(options);
 
 const asHandler = server.createHandler({
   cors: {
