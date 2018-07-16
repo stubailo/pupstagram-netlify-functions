@@ -12,6 +12,7 @@ const typeDefs = gql`
   type Query {
     dogs: [Dog]
     dog(breed: String!): Dog
+    helloWorld: String
   }
 
   type Dog {
@@ -37,6 +38,7 @@ const createDog = (subbreeds, breed) => ({
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
+    helloWorld: () => "Hello, world!",
     dogs: async () => {
       const results = await fetch(`${API}/breeds/list/all`);
       const { message: dogs } = await results.json();

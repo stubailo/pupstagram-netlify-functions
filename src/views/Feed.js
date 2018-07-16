@@ -13,6 +13,7 @@ import { Fetching, Error } from "../Fetching";
 
 const GET_DOGS = gql`
   {
+    helloWorld
     dogs {
       id
       breed
