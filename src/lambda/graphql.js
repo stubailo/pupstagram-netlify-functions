@@ -72,7 +72,8 @@ const server = new ApolloServer({
 const asHandler = server.createHandler({
   cors: {
     origin: "*",
-    credentials: true
+    credentials: true,
+    allowedHeaders: ["X-Apollo-Tracing", "Content-Type", "Authorization"]
   }
 });
 
