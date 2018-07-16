@@ -1,11 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
-const fetch = require("node-fetch").default;
+import { RESTDataSource } from "apollo-datasource-rest";
 const { unique } = require("shorthash");
 const _ = require("lodash");
-
-console.log(fetch);
-
-const API = "https://dog.ceo/api";
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
@@ -35,40 +31,65 @@ const createDog = (subbreeds, breed) => ({
   subbreeds: subbreeds.length > 0 ? subbreeds : null
 });
 
+class DogAPI extends RESTDataSource {
+  baseURL = "https://dog.ceo/api";
+
+  async didReceiveResponse(response) {
+    if (response.ok) {
+      const body = await this.parseBody(response);
+      return body.message;
+    } else {
+      throw await this.errorFromResponse(response);
+    }
+  }
+
+  async getDogs() {
+    const dogs = await this.get(`breeds/list/all`);
+    return _.map(dogs, createDog);
+  }
+
+  async getDog(breed) {
+    const subbreeds = await this.get(`breed/${breed}/list`);
+    return createDog(subbreeds, breed);
+  }
+
+  async getDisplayImage(breed) {
+    return this.get(`breed/${breed}/images/random`);
+  }
+
+  async getImages(breed) {
+    const images = await this.get(`breed/${breed}/images`);
+    return images.map(image => ({ url: image, id: unique(image) }));
+  }
+}
+
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
     helloWorld: async () => await Promise.resolve("Hello, world!"),
-    dogs: async () => {
-      const results = await fetch(`${API}/breeds/list/all`);
-      const { message: dogs } = await results.json();
-
-      return _.map(dogs, createDog);
+    dogs: async (root, args, { dataSources }) => {
+      return dataSources.dogAPI.getDogs();
     },
-    dog: async (root, { breed }) => {
-      const results = await fetch(`${API}/breed/${breed}/list`);
-      const { message: subbreeds } = await results.json();
-
-      return createDog(subbreeds, breed);
+    dog: async (root, { breed }, { dataSources }) => {
+      return dataSources.dogAPI.getDog(breed);
     }
   },
   Dog: {
-    displayImage: async ({ breed }) => {
-      const results = await fetch(`${API}/breed/${breed}/images/random`);
-      const { message: image } = await results.json();
-      return image;
+    displayImage: async ({ breed }, args, { dataSources }) => {
+      return dataSources.dogAPI.getDisplayImage(breed);
     },
-    images: async ({ breed }) => {
-      const results = await fetch(`${API}/breed/${breed}/images`);
-      const { message: images } = await results.json();
-      return images.map(image => ({ url: image, id: unique(image) }));
+    images: async ({ breed }, args, { dataSources }) => {
+      return dataSources.dogAPI.getImages(breed);
     }
   }
 };
 
 const options = {
   typeDefs,
-  resolvers
+  resolvers,
+  dataSources: () => ({
+    dogAPI: new DogAPI()
+  })
 };
 
 if (process.env.ENGINE_API_KEY) {
