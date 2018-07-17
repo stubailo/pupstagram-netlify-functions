@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
 import { RESTDataSource } from "apollo-datasource-rest";
 const { unique } = require("shorthash");
-const { RedisCache } = require("apollo-server-redis");
+const { RedisCache } = require("../RedisCache");
 const _ = require("lodash");
 
 // Construct a schema, using GraphQL schema language
