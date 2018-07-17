@@ -15,8 +15,20 @@ export class RedisCache {
     this.client.flushdb = promisify(this.client.flushdb).bind(this.client);
     this.client.quit = promisify(this.client.quit).bind(this.client);
 
-    this.client.on("error", function(err) {
+    this.client.on("error", () => {
       console.log("Error " + err);
+    });
+
+    this.client.on("connect", () => {
+      console.log("connect");
+    });
+
+    this.client.on("reconnecting", object => {
+      console.log("reconnecting", object);
+    });
+
+    this.client.on("end", () => {
+      console.log("end");
     });
   }
 

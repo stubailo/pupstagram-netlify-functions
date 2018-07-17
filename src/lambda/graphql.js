@@ -98,15 +98,6 @@ if (process.env.ENGINE_API_KEY) {
 if (process.env.REDIS_URL) {
   options.cache = new RedisCache({
     url: process.env.REDIS_URL,
-    connectTimeout: 5000,
-    reconnectOnError: function(err) {
-      console.log("Reconnect on error", err);
-      var targetError = "READONLY";
-      if (err.message.slice(0, targetError.length) === targetError) {
-        // Only reconnect when the error starts with "READONLY"
-        return true;
-      }
-    },
     retryStrategy: function(times) {
       console.log("Redis Retry", times);
       if (times >= 3) {
