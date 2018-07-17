@@ -96,7 +96,27 @@ if (process.env.ENGINE_API_KEY) {
 }
 
 if (process.env.REDIS_URL) {
-  options.cache = new RedisCache(process.env.REDIS_URL);
+  options.cache = new RedisCache({
+    url: process.env.REDIS_URL,
+    connectTimeout: 5000,
+    reconnectOnError: function(err) {
+      console.log("Reconnect on error", err);
+      var targetError = "READONLY";
+      if (err.message.slice(0, targetError.length) === targetError) {
+        // Only reconnect when the error starts with "READONLY"
+        return true;
+      }
+    },
+    retryStrategy: function(times) {
+      console.log("Redis Retry", times);
+      if (times >= 3) {
+        return undefined;
+      }
+      var delay = Math.min(times * 50, 2000);
+      return delay;
+    },
+    socket_keepalive: false
+  });
 }
 
 const server = new ApolloServer(options);

@@ -21,13 +21,13 @@ export class RedisCache {
   }
 
   async set(key, data, options) {
-    console.log("calling set");
     const { ttl } = Object.assign({}, this.defaultSetOptions, options);
+    console.log("calling set", key);
     await this.client.set(key, data, "EX", ttl);
   }
 
   async get(key) {
-    console.log("calling get");
+    console.log("calling get", key);
 
     try {
       const reply = await this.client.get(key);
