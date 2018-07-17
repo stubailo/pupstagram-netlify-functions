@@ -54,7 +54,9 @@ class DogAPI extends RESTDataSource {
   }
 
   async getDisplayImage(breed) {
-    return this.get(`breed/${breed}/images/random`);
+    return this.get(`breed/${breed}/images/random`, undefined, {
+      cacheOptions: { ttl: 120 }
+    });
   }
 
   async getImages(breed) {
