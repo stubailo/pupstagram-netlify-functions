@@ -123,5 +123,5 @@ exports.handler = (event, context, callback) => {
     callback(...args);
   };
 
-  return asHandler(event, context, cb);
+  asHandler(event, context, cb);
 };
