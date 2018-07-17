@@ -66,7 +66,6 @@ class DogAPI extends RESTDataSource {
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    helloWorld: async () => await Promise.resolve("Hello, world!"),
     dogs: async (root, args, { dataSources }) => {
       return dataSources.dogAPI.getDogs();
     },
