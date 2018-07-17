@@ -28,12 +28,18 @@ export class RedisCache {
 
   async get(key) {
     console.log("calling get");
-    const reply = await this.client.get(key);
-    // reply is null if key is not found
-    if (reply !== null) {
-      return reply;
+
+    try {
+      const reply = await this.client.get(key);
+      console.log("get returned");
+      // reply is null if key is not found
+      if (reply !== null) {
+        return reply;
+      }
+      return;
+    } catch (e) {
+      console.log("error in get", e);
     }
-    return;
   }
 
   async flush() {
