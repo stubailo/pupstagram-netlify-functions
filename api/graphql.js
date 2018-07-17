@@ -96,15 +96,9 @@ if (process.env.ENGINE_API_KEY) {
 
 const server = new ApolloServer(options);
 
-const asHandler = server.createHandler({
+exports.handler = server.createHandler({
   cors: {
     origin: "*",
-    credentials: true,
-    allowedHeaders: ["X-Apollo-Tracing", "Content-Type", "Authorization"]
+    credentials: true
   }
 });
-
-exports.handler = (...args) => {
-  console.log(args[0]);
-  return asHandler(...args);
-};

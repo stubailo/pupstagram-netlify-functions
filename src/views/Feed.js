@@ -12,7 +12,7 @@ import Header from "../Header";
 import { Fetching, Error } from "../Fetching";
 
 const GET_DOGS = gql`
-  query Feed {
+  query Dogs {
     dogs {
       id
       breed

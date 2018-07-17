@@ -22,9 +22,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:lambda": "netlify-lambda serve src/lambda",
+    "start:lambda": "netlify-lambda serve api",
     "build": "react-scripts build",
-    "build:lambda": "netlify-lambda build src/lambda",
+    "build:lambda": "netlify-lambda build api",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

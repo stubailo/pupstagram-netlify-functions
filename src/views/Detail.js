@@ -10,7 +10,7 @@ import Header from "../Header";
 import { Fetching, Error } from "../Fetching";
 
 export const GET_DOG = gql`
-  query getDogByBreed($breed: String!) {
+  query DogByBreed ($breed: String!) {
     dog(breed: $breed) {
       images {
         url
