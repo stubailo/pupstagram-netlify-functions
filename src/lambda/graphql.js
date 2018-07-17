@@ -8,7 +8,6 @@ const typeDefs = gql`
   type Query {
     dogs: [Dog]
     dog(breed: String!): Dog
-    helloWorld: String
   }
 
   type Dog {
@@ -17,6 +16,7 @@ const typeDefs = gql`
     displayImage: String
     images: [Image]
     subbreeds: [String]
+    newField: String
   }
 
   type Image {
