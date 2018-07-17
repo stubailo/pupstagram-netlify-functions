@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
 import { RESTDataSource } from "apollo-datasource-rest";
 const { unique } = require("shorthash");
-const { RedisCache } = require("../RedisCache");
+const { RedisCache } = require("apollo-server-redis");
 const _ = require("lodash");
 
 // Construct a schema, using GraphQL schema language
@@ -98,15 +98,7 @@ if (process.env.ENGINE_API_KEY) {
 if (process.env.REDIS_URL) {
   options.cache = new RedisCache({
     url: process.env.REDIS_URL,
-    retryStrategy: function(times) {
-      console.log("Redis Retry", times);
-      if (times >= 3) {
-        return undefined;
-      }
-      var delay = Math.min(times * 50, 2000);
-      return delay;
-    },
-    socket_keepalive: false
+    socket_keepalive: true
   });
 }
 
