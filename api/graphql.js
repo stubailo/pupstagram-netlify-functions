@@ -6,6 +6,7 @@ const _ = require("lodash");
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type Query {
+    title: String
     dogs: [Dog]
     dog(breed: String!): Dog
   }
@@ -65,6 +66,7 @@ class DogAPI extends RESTDataSource {
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
+    title: () => "Hello, Serverless!",
     dogs: async (root, args, { dataSources }) => {
       return dataSources.dogAPI.getDogs();
     },
