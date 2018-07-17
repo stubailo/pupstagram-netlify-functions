@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
 import { RESTDataSource } from "apollo-datasource-rest";
 const { unique } = require("shorthash");
-const { RedisCache } = require('apollo-server-redis');
+const { RedisCache } = require("apollo-server-redis");
 const _ = require("lodash");
 
 // Construct a schema, using GraphQL schema language
@@ -9,7 +9,6 @@ const typeDefs = gql`
   type Query {
     dogs: [Dog]
     dog(breed: String!): Dog
-    helloWorld: String
   }
 
   type Dog {
@@ -67,7 +66,6 @@ class DogAPI extends RESTDataSource {
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    helloWorld: async () => await Promise.resolve("Hello, world!"),
     dogs: async (root, args, { dataSources }) => {
       return dataSources.dogAPI.getDogs();
     },
@@ -103,15 +101,10 @@ if (process.env.REDIS_URL) {
 
 const server = new ApolloServer(options);
 
-const asHandler = server.createHandler({
+exports.handler = server.createHandler({
   cors: {
     origin: "*",
     credentials: true,
     allowedHeaders: ["X-Apollo-Tracing", "Content-Type", "Authorization"]
   }
 });
-
-exports.handler = (...args) => {
-  console.log(args[0]);
-  return asHandler(...args);
-};
