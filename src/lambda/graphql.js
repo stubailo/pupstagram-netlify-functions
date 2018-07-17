@@ -121,5 +121,5 @@ exports.handler = (event, context, callback) => {
   //   callback(...args);
   // };
   context.callbackWaitsForEmptyEventLoop = false;
-  asHandler(event, context, cb);
+  asHandler(event, context, callback);
 };
