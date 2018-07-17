@@ -16,6 +16,7 @@ const typeDefs = gql`
     displayImage: String
     images: [Image]
     subbreeds: [String]
+    newField: String
   }
 
   type Image {
