@@ -95,7 +95,7 @@ if (process.env.ENGINE_API_KEY) {
   options.engine = { apiKey: process.env.ENGINE_API_KEY };
 }
 
-console.log('this should definitely print??');
+console.log("this should definitely print??");
 
 if (process.env.REDIS_URL) {
   options.cache = new RedisCache(process.env.REDIS_URL);
@@ -103,10 +103,22 @@ if (process.env.REDIS_URL) {
 
 const server = new ApolloServer(options);
 
-exports.handler = server.createHandler({
+const asHandler = server.createHandler({
   cors: {
     origin: "*",
     credentials: true,
     allowedHeaders: ["X-Apollo-Tracing", "Content-Type", "Authorization"]
   }
 });
+
+exports.handler = (event, context, callback) => {
+  const cb = async (...args) => {
+    if (options.cache) {
+      await options.cache.close();
+    }
+
+    callback(...args);
+  };
+
+  return asHandler(event, context, cb);
+};
