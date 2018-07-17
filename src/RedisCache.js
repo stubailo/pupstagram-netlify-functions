@@ -31,7 +31,7 @@ export class RedisCache {
 
     try {
       const reply = await this.client.get(key);
-      console.log("get returned");
+      console.log("get returned xxx");
       // reply is null if key is not found
       if (reply !== null) {
         return reply;
