@@ -97,9 +97,9 @@ if (process.env.ENGINE_API_KEY) {
 
 console.log("this should definitely print??");
 
-// if (process.env.REDIS_URL) {
-//   options.cache = new RedisCache(process.env.REDIS_URL);
-// }
+if (process.env.REDIS_URL) {
+  options.cache = new RedisCache(process.env.REDIS_URL);
+}
 
 const server = new ApolloServer(options);
 
@@ -122,6 +122,6 @@ exports.handler = (event, context, callback) => {
     console.log("about to call real callback");
     callback(...args);
   };
-
+  context.callbackWaitsForEmptyEventLoop = false;
   asHandler(event, context, cb);
 };
