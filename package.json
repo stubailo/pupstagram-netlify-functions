@@ -6,7 +6,7 @@
     "apollo-boost": "0.1.1",
     "apollo-datasource-rest": "^2.0.0-rc.8",
     "apollo-server-lambda": "^2.0.0-xrc.8",
-    "apollo-server-redis": "^2.0.0-rc.0",
+    "apollo-server-redis": "^2.0.0-rc.8",
     "graphql": "^0.13.2",
     "lodash": "^4.17.10",
     "netlify-lambda": "^0.4.0",
@@ -23,9 +23,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:lambda": "netlify-lambda serve src/lambda",
+    "start:lambda": "netlify-lambda serve -c lambda.webpack.config.js src/lambda",
     "build": "react-scripts build",
-    "build:lambda": "netlify-lambda build src/lambda",
+    "build:lambda": "netlify-lambda build -c lambda.webpack.config.js src/lambda",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
