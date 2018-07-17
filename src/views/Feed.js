@@ -13,6 +13,7 @@ import { Fetching, Error } from "../Fetching";
 
 const GET_DOGS = gql`
   query Dogs {
+    title
     dogs {
       id
       breed
@@ -23,33 +24,35 @@ const GET_DOGS = gql`
 
 const Feed = () => (
   <View style={styles.container}>
-    <Header />
     <Query query={GET_DOGS}>
       {({ loading, error, data, client }) => {
         if (loading) return <Fetching />;
         if (error) return <Error />;
 
         return (
-          <DogList
-            data={data.dogs}
-            renderRow={(type, data) => (
-              <Link
-                to={{
-                  pathname: `/${data.breed}/${data.id}`,
-                  state: { id: data.id }
-                }}
-                onMouseOver={() =>
-                  client.query({
-                    query: GET_DOG,
-                    variables: { breed: data.breed }
-                  })
-                }
-                style={{ textDecoration: "none" }}
-              >
-                <Dog {...data} url={data.displayImage} />
-              </Link>
-            )}
-          />
+          <div>
+            <Header text={data.title} />
+            <DogList
+              data={data.dogs}
+              renderRow={(type, data) => (
+                <Link
+                  to={{
+                    pathname: `/${data.breed}/${data.id}`,
+                    state: { id: data.id }
+                  }}
+                  onMouseOver={() =>
+                    client.query({
+                      query: GET_DOG,
+                      variables: { breed: data.breed }
+                    })
+                  }
+                  style={{ textDecoration: "none" }}
+                >
+                  <Dog {...data} url={data.displayImage} />
+                </Link>
+              )}
+            />
+          </div>
         );
       }}
     </Query>
