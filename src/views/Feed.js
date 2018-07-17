@@ -12,8 +12,7 @@ import Header from "../Header";
 import { Fetching, Error } from "../Fetching";
 
 const GET_DOGS = gql`
-  query SlowerHW {
-    helloWorld
+  query Feed {
     dogs {
       id
       breed
