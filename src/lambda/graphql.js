@@ -109,17 +109,19 @@ const asHandler = server.createHandler({
   }
 });
 
-exports.handler = (event, context, callback) => {
-  console.log("handler start");
-  const cb = async (...args) => {
-    console.log("fake callback called");
-    if (options.cache) {
-      console.log("closing cache");
-      await options.cache.close();
-    }
-    console.log("about to call real callback");
-    callback(...args);
-  };
-  context.callbackWaitsForEmptyEventLoop = false;
-  asHandler(event, context, cb);
-};
+exports.handler = asHandler;
+
+// (event, context, callback) => {
+//   console.log("handler start");
+//   const cb = async (...args) => {
+//     console.log("fake callback called");
+//     if (options.cache) {
+//       console.log("closing cache");
+//       await options.cache.close();
+//     }
+//     console.log("about to call real callback");
+//     callback(...args);
+//   };
+//   context.callbackWaitsForEmptyEventLoop = false;
+//   asHandler(event, context, cb);
+// };
