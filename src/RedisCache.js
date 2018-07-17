@@ -3,10 +3,12 @@ import { promisify } from "util";
 
 export class RedisCache {
   constructor(options) {
+    console.log("creating cache");
     this.defaultSetOptions = {
       ttl: 300
     };
     this.client = Redis.createClient(options);
+    console.log("called create client");
     // promisify client calls for convenience
     this.client.get = promisify(this.client.get).bind(this.client);
     this.client.set = promisify(this.client.set).bind(this.client);
@@ -19,11 +21,13 @@ export class RedisCache {
   }
 
   async set(key, data, options) {
+    console.log("calling set");
     const { ttl } = Object.assign({}, this.defaultSetOptions, options);
     await this.client.set(key, data, "EX", ttl);
   }
 
   async get(key) {
+    console.log("calling get");
     const reply = await this.client.get(key);
     // reply is null if key is not found
     if (reply !== null) {
