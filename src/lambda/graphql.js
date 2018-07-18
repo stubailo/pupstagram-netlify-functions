@@ -97,12 +97,12 @@ if (process.env.ENGINE_API_KEY) {
   options.engine = { apiKey: process.env.ENGINE_API_KEY };
 }
 
-// if (process.env.REDIS_URL) {
-//   options.cache = new RedisCache({
-//     url: process.env.REDIS_URL,
-//     socket_keepalive: true
-//   });
-// }
+if (process.env.REDIS_URL) {
+  options.cache = new RedisCache({
+    url: process.env.REDIS_URL,
+    socket_keepalive: true
+  });
+}
 
 const server = new ApolloServer(options);
 
