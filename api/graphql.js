@@ -1,6 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
 import { RESTDataSource } from "apollo-datasource-rest";
 const { unique } = require("shorthash");
+const { RedisCache } = require("apollo-server-redis");
 const _ = require("lodash");
 
 // Construct a schema, using GraphQL schema language
@@ -53,7 +54,9 @@ class DogAPI extends RESTDataSource {
   }
 
   async getDisplayImage(breed) {
-    return this.get(`breed/${breed}/images/random`);
+    return this.get(`breed/${breed}/images/random`, undefined, {
+      cacheOptions: { ttl: 120 }
+    });
   }
 
   async getImages(breed) {
@@ -92,6 +95,13 @@ const options = {
 
 if (process.env.ENGINE_API_KEY) {
   options.engine = { apiKey: process.env.ENGINE_API_KEY };
+}
+
+if (process.env.REDIS_URL) {
+  options.cache = new RedisCache({
+    url: process.env.REDIS_URL,
+    socket_keepalive: true
+  });
 }
 
 const server = new ApolloServer(options);
