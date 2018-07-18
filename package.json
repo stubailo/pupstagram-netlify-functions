@@ -23,9 +23,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:lambda": "netlify-lambda serve -c lambda.webpack.config.js src/lambda",
+    "start:lambda": "netlify-lambda serve -c lambda.webpack.config.js api",
     "build": "react-scripts build",
-    "build:lambda": "netlify-lambda build -c lambda.webpack.config.js src/lambda",
+    "build:lambda": "netlify-lambda build -c lambda.webpack.config.js api",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

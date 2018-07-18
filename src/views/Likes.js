@@ -9,7 +9,7 @@ import DogList from '../DogList';
 import Header from '../Header';
 
 const GET_LIKED_PHOTOS = gql`
-  query {
+  query LikedPhotos {
     likedPhotos @client {
       url
       id

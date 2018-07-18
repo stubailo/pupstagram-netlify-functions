@@ -12,7 +12,7 @@ import Header from "../Header";
 import { Fetching, Error } from "../Fetching";
 
 const GET_DOGS = gql`
-  query WithRedis {
+  query Dogs {
     dogs {
       id
       breed
